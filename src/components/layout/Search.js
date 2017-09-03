@@ -1,5 +1,7 @@
 import React, { Component }  from 'react'
 import superagent from 'superagent'
+import actions from '../../actions'
+import { connect } from 'react-redux'
 
 class Search extends Component {
   constructor(){
@@ -61,9 +63,12 @@ class Search extends Component {
   selectVenue(venue, event){
   	event.preventDefault()
   	console.log('selectVenue: '+JSON.stringify(venue))
+    this.props.selectVenue(venue)
   }
 
   render(){
+    
+
   	return(
   	  <div className="container">
   	    <div className="row">
@@ -88,7 +93,9 @@ class Search extends Component {
   	      </div>
 
   	      <div className="col-md-8">
+            { (this.props.venue.selectedVenue==null) ? 'No venue' : <h3>{this.props.venue.selectedVenue.name}</h3> 
 
+            }
   	      </div>
 
   	    </div>
@@ -99,4 +106,16 @@ class Search extends Component {
 
 }
 
-export default Search
+const stateToProps = (state) => {
+	return{
+        venue: state.venue  //venue: state.venue.selectedVenue
+	}
+}
+
+const dispatchToProps = (dispatch) => {
+	return{
+        selectVenue: (venue) => dispatch(actions.selectVenue(venue)) 
+	}
+}
+
+export default connect(stateToProps, dispatchToProps)(Search)

@@ -3,6 +3,13 @@ import { TurboClient } from '../utils'
 
 export default {
 
+	selectVenue: (venue) => {
+	  return {
+	  	type: constants.SELECT_VENUE,
+	  	data: venue
+	  }
+	},
+
 	fetchUsers: (params) => {
 		return dispatch => {
 			return dispatch(TurboClient.getRequest('user', params, constants.USERS_RECEIVED))
