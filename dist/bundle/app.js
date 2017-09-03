@@ -24957,8 +24957,16 @@ var Search = function (_Component) {
       });
     }
   }, {
+    key: 'selectVenue',
+    value: function selectVenue(venue, event) {
+      event.preventDefault();
+      console.log('selectVenue: ' + JSON.stringify(venue));
+    }
+  }, {
     key: 'render',
     value: function render() {
+      var _this3 = this;
+
       return _react2.default.createElement(
         'div',
         { className: 'container' },
@@ -24995,7 +25003,11 @@ var Search = function (_Component) {
                 return _react2.default.createElement(
                   'li',
                   { key: venue.id },
-                  venue.name
+                  _react2.default.createElement(
+                    'a',
+                    { onClick: _this3.selectVenue.bind(_this3, venue), href: '#' },
+                    venue.name
+                  )
                 );
               })
             )
