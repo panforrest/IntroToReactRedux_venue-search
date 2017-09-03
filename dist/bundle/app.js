@@ -24901,6 +24901,7 @@ var Search = function (_Component) {
     var _this = _possibleConstructorReturn(this, (Search.__proto__ || Object.getPrototypeOf(Search)).call(this));
 
     _this.state = {
+      venues: [],
       search: {
         location: '',
         query: ''
@@ -24910,6 +24911,12 @@ var Search = function (_Component) {
   }
 
   _createClass(Search, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      // event.preventDefault()
+      console.log('componentDidMount: ');
+    }
+  }, {
     key: 'updateSearchFilters',
     value: function updateSearchFilters(field, event) {
       console.log('updateSearchFilter: ' + field + ' == ' + event.target.value); //NOT event.target.id
@@ -24922,14 +24929,16 @@ var Search = function (_Component) {
   }, {
     key: 'searchVenues',
     value: function searchVenues() {
+      var _this2 = this;
+
       console.log('searchVenues: ' + JSON.stringify(this.state.search));
 
       var url = 'https://api.foursquare.com/v2/venues/search';
 
       var params = {
         v: '20140806',
-        near: 'new+york,ny',
-        query: 'coffee',
+        near: this.state.search.location, //near: 'new+york,ny',
+        query: this.state.search.query, //query: 'coffee',
         client_id: 'VZZ1EUDOT0JYITGFDKVVMCLYHB3NURAYK3OHB5SK5N453NFD',
         client_secret: 'UAA15MIFIWVKZQRH22KPSYVWREIF2EMMH0GQ0ZKIQZC322NZ'
       };
@@ -24941,6 +24950,10 @@ var Search = function (_Component) {
         }
 
         console.log(JSON.stringify(data.body.response.venues));
+        var venues = Object.assign([], data.body.response.venues);
+        _this2.setState({
+          venues: venues
+        });
       });
     }
   }, {
@@ -24968,6 +24981,23 @@ var Search = function (_Component) {
               'button',
               { onClick: this.searchVenues.bind(this) },
               'Search'
+            ),
+            _react2.default.createElement('hr', null),
+            _react2.default.createElement(
+              'h3',
+              null,
+              'Venues'
+            ),
+            _react2.default.createElement(
+              'ol',
+              null,
+              this.state.venues.map(function (venue, i) {
+                return _react2.default.createElement(
+                  'li',
+                  { key: venue.id },
+                  venue.name
+                );
+              })
             )
           ),
           _react2.default.createElement('div', { className: 'col-md-8' })

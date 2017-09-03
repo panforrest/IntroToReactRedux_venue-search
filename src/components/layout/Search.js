@@ -5,11 +5,17 @@ class Search extends Component {
   constructor(){
   	super()
   	this.state = {
+  	  venues: [],	
   	  search: {
   	  	location: '',
   	  	query: ''
   	  }
   	}
+  }
+
+  componentDidMount(){
+  	// event.preventDefault()
+  	console.log('componentDidMount: ')
   }
 
   updateSearchFilters(field, event){
@@ -28,8 +34,8 @@ class Search extends Component {
 
   	const params = {
   	  v: '20140806',
-  	  near: 'new+york,ny',
-  	  query: 'coffee',
+  	  near: this.state.search.location,  //near: 'new+york,ny',
+  	  query: this.state.search.query,  //query: 'coffee',
   	  client_id: 'VZZ1EUDOT0JYITGFDKVVMCLYHB3NURAYK3OHB5SK5N453NFD',
   	  client_secret: 'UAA15MIFIWVKZQRH22KPSYVWREIF2EMMH0GQ0ZKIQZC322NZ'
   	}
@@ -45,6 +51,10 @@ class Search extends Component {
   	  }
 
   	  console.log(JSON.stringify(data.body.response.venues))
+  	  let venues = Object.assign([], data.body.response.venues)
+  	  this.setState({
+  	  	venues: venues
+  	  })
   	})
   }
 
@@ -57,6 +67,14 @@ class Search extends Component {
   	        <input type="text" onChange={this.updateSearchFilters.bind(this, 'query')} placeholder="Query" /><br />
   	        <input type="text" onChange={this.updateSearchFilters.bind(this, 'location')} placeholder="Location" /><br />
   	        <button onClick={this.searchVenues.bind(this)}>Search</button>
+  	        <hr />
+  	        <h3>Venues</h3>
+  	        <ol>
+  	          { this.state.venues.map((venue, i) => {
+  	          	return <li key={venue.id}>{venue.name}</li>
+  	            })
+  	          }
+  	        </ol>
 
   	      </div>
 
